@@ -15,7 +15,7 @@ library("dplyr")
 
 ##### Reading CCHS 2012 csv file, checking if R reads all the variables in the table as numbers
 ```{r}
-cchs <- read_csv("/Users/olechka/Documents/R/cancensus_saskatoon/CCHS_2012.csv")
+cchs <- read_csv("/Users/olechka/Documents/R/challenges/CCHS_2012.csv")
 head(cchs, 10)
 sapply(cchs, class)
 ```
