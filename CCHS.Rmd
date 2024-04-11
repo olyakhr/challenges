@@ -1,0 +1,103 @@
+---
+title: "CCHS"
+author: "Olya"
+date: "2024-04-05"
+output: html_document
+---
+
+## Me trying to beat the R 
+
+Needed packages installation:
+```{r setup, include=FALSE}
+library("tidyverse")
+library("dplyr")
+```
+
+##### Reading CCHS 2012 csv file, checking if R reads all the variables in the table as numbers
+```{r}
+cchs <- read_csv("/Users/olechka/Documents/R/cancensus_saskatoon/CCHS_2012.csv")
+head(cchs, 10)
+sapply(cchs, class)
+```
+
+##### We checked, now creating a basic plot
+
+```{r}
+ggplot(cchs, aes(x = hwtghtm, y = hwtgwtk)) + geom_point()
+```
+*What an ugly plot to be honest...*
+
+##### Making missing data become NA instead of numbers:
+```{r}
+cchs_clean <- cchs %>% mutate(hwtghtm = factor(hwtghtm))
+cchs_clean <- cchs_clean %>% mutate(hwtgwtk = factor(hwtgwtk))
+cchs_clean <- cchs_clean %>% mutate(hwtghtm = fct_recode(hwtghtm, NULL = "9.996", NULL = "9.999"))
+```
+
+##### Now creating Body Mass Index categories:
+```{r}
+ggplot(cchs_clean, aes(x = hwtghtm, y = hwtgwtk)) + geom_point()
+cchs_clean <- cchs_clean %>%
+  mutate(bmi_category = case_when(
+    hwtgbmi < 18.5 ~ "underweight",
+    hwtgbmi >=30 & hwtgbmi <999 ~ "obese",
+    hwtgbmi >=25 & hwtgbmi <30 ~ "overweight",
+    hwtgbmi >=18.5 & hwtgbmi <25 ~ "normal weight",
+    TRUE ~ "other"
+  ))
+```
+
+##### Identifying provinces' names:
+
+```{r}
+cchs_clean <- cchs_clean %>%
+  mutate(geogprv_name = case_when(
+    geogprv == 10 ~ "NFLD & LAB",
+    geogprv == 11 ~ "PEI",
+    geogprv == 12 ~ "NOVA SCOTIA",
+    geogprv == 13 ~ "NEW BRUNSWICK",
+    geogprv == 24 ~ "QUEBEC",
+    geogprv == 35 ~ "ONTARIO",
+    geogprv == 46 ~ "MANITOBA",
+    geogprv == 47 ~ "SASKATCHEWAN",
+    geogprv == 48 ~ "ALBERTA",
+    geogprv == 59 ~ "BRITISH COLUMBIA",
+    geogprv == 60 ~ "YUKON/NWT/NUNA",
+    geogprv == 96 ~ "NOT APPLICABLE",
+    geogprv == 97 ~ "DON'T KNOW",
+    geogprv == 98 ~ "REFUSAL",
+    TRUE ~ "NOT STATED"
+  ))
+
+```
+
+##### Since we turned the numeric variables hwtghtm and hwtgwtk into the factor, R cannot complete the summarize process, so let's assume mutating them back into numeric won't crush everythimg we did before:
+
+```{r}
+cchs_clean$hwtgwtk <- as.numeric(as.character(cchs_clean$hwtgwtk))
+cchs_clean$hwtghtm <- as.numeric(as.character(cchs_clean$hwtghtm))
+
+summarize(
+  group_by(cchs_clean, bmi_category), 
+  avg_ht = mean(hwtghtm, na.rm = T), 
+  sd_ht = sd(hwtghtm, na.rm = T),
+  avg_wt = mean(hwtgwtk, na.rm = T), 
+  sd_wt = sd(hwtgwtk, na.rm = T)
+)
+```
+
+##### This data is not for analysis, but let's give it a try...
+```{r}
+ggplot(group_by(cchs_clean, bmi_category), aes(x = bmi_category, y = geogprv_name)) +
+  geom_bar(stat = "summary", fun = "mean", fill = "blue") +
+  ggtitle("BMI Canada")
+
+ggplot(group_by(cchs_clean, bmi_category), aes(x = bmi_category, y = hwtgwtk)) +
+  geom_bar(stat = "summary", fun = "mean", fill = "green") +
+  ylab("Average Weight") +
+  ggtitle("Average Weight by BMI")
+
+ggplot(group_by(cchs_clean, geogprv_name), aes(x = geogprv_name, y = hwtghtm)) +
+  geom_bar(stat = "summary", fun = "mean", fill = "blue") +
+  ylab("Average Height") +
+  ggtitle("Average Height by Province")
