@@ -43,23 +43,13 @@ st_write(Avalon_PLOS_sf, "Avalon_PLOS.shp")
 colnames(Avalon_PLOS_sf) <- gsub("\\.", "_", colnames(Avalon_PLOS_sf))
 print(colnames(Avalon_PLOS_sf))
 colnames(Avalon_PLOS_sf) <- c(
-  "fid", "full_id", "osm_id", "osm_type", "lit", 
-  "natural", "circumf", "species", "height", "leaf_cyc", 
-  "leaf_typ", "denot", "hwy_x", "lamp_mnt", "mat_x", 
-  "power", "lamp_typ", "hwy_y", "stop", "direct", 
-  "mat_y", "trfc_clm", "trfc_sig_dir", "noexit", "crs_mrk", 
-  "gate_typ", "name_en", "addr_strt", "addr_pstc", "addr_hsnm", 
-  "slpd_curb", "kerb", "lift_gt_typ", "crssng", "btn_oprtd", 
-  "amenity", "entrance", "bus", "pub_trns", "name", 
-  "rlwy", "acc", "barrier", "trfc_sig", "hwy", 
-  "mot_veh", "horse", "foot", "oneway", "surface", 
-  "bike", "covered", "embnkmt", "brdg_nam", "trl_vis", 
-  "mtb_uphl", "mtb_scl", "incline", "golf", "width", 
-  "segrgtd", "footway", "tunnel", "layer", "bridge", 
-  "service", "cnstrct", "lns_fwd", "lns_bkwd", "hgv", 
-  "junction", "alt_nam", "ln_mrk", "veh", "sdwlk", 
-  "psv", "lanes", "maxspd", "loc_nam", "wkt_geom"
-)
+  "fid", "full_id", "osm_id", "osm_type", "lit","natural", "circumf", "species", "height", "leaf_cyc", 
+  "leaf_typ", "denot", "hwy_x", "lamp_mnt", "mat_x", "power", "lamp_typ", "hwy_y", "stop", "direct", "mat_y", "trfc_clm", "trfc_sig_dir", "noexit", "crs_mrk", 
+  "gate_typ", "name_en", "addr_strt", "addr_pstc", "addr_hsnm", "slpd_curb", "kerb", "lift_gt_typ", "crssng", "btn_oprtd", 
+  "amenity", "entrance", "bus", "pub_trns", "name", "rlwy", "acc", "barrier", "trfc_sig", "hwy", "mot_veh", "horse", "foot", "oneway", "surface", 
+  "bike", "covered", "embnkmt", "brdg_nam", "trl_vis", "mtb_uphl", "mtb_scl", "incline", "golf", "width", 
+  "segrgtd", "footway", "tunnel", "layer", "bridge", "service", "cnstrct", "lns_fwd", "lns_bkwd", "hgv", 
+  "junction", "alt_nam", "ln_mrk", "veh", "sdwlk", "psv", "lanes", "maxspd", "loc_nam", "wkt_geom")
 st_write(Avalon_PLOS_sf, "Avalon_PLOS.shp")
 
 
