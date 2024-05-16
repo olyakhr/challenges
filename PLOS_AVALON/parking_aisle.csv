@@ -1,0 +1,2 @@
+wkt_geom,fid,full_id,osm_id,osm_type,highway,stop,direction,material,traffic_calming,traffic_signals:direction,noexit,crossing:markings,gate:type,name:en,addr:street,addr:postcode,addr:housenumber,sloped_curb,kerb,lift_gate:type,crossing,button_operated,amenity,entrance,bus,public_transport,name,railway,access,barrier,traffic_signals
+Point (-106.64880929999999637 52.09144030000000214),8,n250752683,250752683,node,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,gate,NULL
