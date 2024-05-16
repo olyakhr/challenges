@@ -12,8 +12,8 @@ output:
 ##### Reading csv files, merging all line-level data in one table based on the common for sidewalk and highway tables columns.
 
 ```r
-sidewalks <- read.csv("/Users/olechka/Documents/R/PLOS_AVALON/sidewalks.csv")
-highways <- read_csv("/Users/olechka/Documents/R/PLOS_AVALON/highway.csv")
+sidewalks <- read.csv("/Users/olechka/Documents/R/challenges/PLOS_AVALON/sidewalks.csv")
+highways <- read_csv("/Users/olechka/Documents/R/challenges/PLOS_AVALON/highway.csv")
 ```
 
 ```
@@ -34,9 +34,9 @@ line_data <- merge(sidewalks, highways, by = c("wkt_geom", "fid", "full_id", "os
 ##### Now moving to point data and repeatins previous actions - merging all point-level data in one table based on the common for trees, lights, and parking tables columns.
 
 ```r
-trees <- read.csv("/Users/olechka/Documents/R/PLOS_AVALON/trees.csv")
-lights <- read.csv("/Users/olechka/Documents/R/PLOS_AVALON/street_lamp.csv")
-parking <- read.csv("/Users/olechka/Documents/R/PLOS_AVALON/parking_aisle.csv")
+trees <- read.csv("/Users/olechka/Documents/R/challenges/PLOS_AVALON/trees.csv")
+lights <- read.csv("/Users/olechka/Documents/R/challenges/PLOS_AVALON/street_lamp.csv")
+parking <- read.csv("/Users/olechka/Documents/R/challenges/PLOS_AVALON/parking_aisle.csv")
 point_data <- merge( trees, lights, by = c("wkt_geom", "fid", "full_id", "osm_id", "osm_type", "lit"), all = TRUE)
 
 point_data_full <- merge( point_data, parking, by = c("wkt_geom", "fid", "full_id", "osm_id", "osm_type"), all = TRUE)
