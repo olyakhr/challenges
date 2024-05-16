@@ -1,0 +1,51 @@
+---
+title: "Avalon PLOS"
+author: "Olya"
+output: 
+  html_document:
+    keep_md: true
+---
+
+## Avalon (well-mapped in osm neighbourhood) PLOS
+```{r setup, include=FALSE}
+library(tidyverse)
+library(sf)
+```
+
+##### Reading csv files, merging all line-level data in one table based on the common for sidewalk and highway tables columns.
+```{r}
+sidewalks <- read.csv("/Users/olechka/Documents/R/PLOS_AVALON/sidewalks.csv")
+highways <- read_csv("/Users/olechka/Documents/R/PLOS_AVALON/highway.csv")
+line_data <- merge(sidewalks, highways, by = c("wkt_geom", "fid", "full_id", "osm_id", "osm_type", "highway", "motor_vehicle", "access", "horse", "foot", "lit", "oneway", "surface", "bicycle", "name"), all = TRUE)
+```
+
+##### Now moving to point data and repeatins previous actions - merging all point-level data in one table based on the common for trees, lights, and parking tables columns.
+```{r}
+trees <- read.csv("/Users/olechka/Documents/R/PLOS_AVALON/trees.csv")
+lights <- read.csv("/Users/olechka/Documents/R/PLOS_AVALON/street_lamp.csv")
+parking <- read.csv("/Users/olechka/Documents/R/PLOS_AVALON/parking_aisle.csv")
+point_data <- merge( trees, lights, by = c("wkt_geom", "fid", "full_id", "osm_id", "osm_type", "lit"), all = TRUE)
+
+point_data_full <- merge( point_data, parking, by = c("wkt_geom", "fid", "full_id", "osm_id", "osm_type"), all = TRUE)
+```
+
+
+##### Performing join of points and lines to create a master df file
+```{r}
+Avalon_PLOS_df <- full_join(point_data_full, line_data)
+head(Avalon_PLOS_df)
+```
+
+
+##### converting df into sf because we weren't able to write shp
+```{r}
+Avalon_PLOS_sf <- st_as_sf(Avalon_PLOS_df, wkt = "wkt_geom", crs = 4326)
+Avalon_PLOS_sf <- Avalon_PLOS_sf %>%   mutate_if(is.character, ~ if_else(. == "NULL", NA_character_, .))
+point_data_sf <- st_as_sf(point_data_full, wkt = "wkt_geom", crs = 4326)
+line_data_sf <- st_as_sf(line_data, wkt = "wkt_geom", crs = 4326)
+
+plot(st_geometry(point_data_sf), col = 'blue')
+plot(st_geometry(line_data_sf), col = 'red', add = TRUE)   
+plot(st_geometry(Avalon_PLOS_sf), col = "green")
+```
+
